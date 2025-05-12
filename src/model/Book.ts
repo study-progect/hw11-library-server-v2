@@ -21,7 +21,7 @@ export enum BookStatus {
     "ON_HAND" = "on_hand",
     "REMOVED" = "removed"
 }
-export  type PickRecord = {
+export type PickRecord = {
     reader:string,
     date: string
 }

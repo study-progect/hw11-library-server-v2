@@ -10,24 +10,24 @@ export const booksRouter = express.Router();
 
 const controller = new BookController();
 
-booksRouter.get('/', asyncHandler((req, res) => {
-    const result: Book[] = controller.getAllBooks();
+booksRouter.get('/', asyncHandler(async (req, res) => {
+    const result: Book[] = await controller.getAllBooks();
     res.type("application/json").json(result)
 }));
 
-booksRouter.post('/',asyncHandler((req, res) => {
+booksRouter.post('/',asyncHandler(async (req, res) => {
     const dto = req.body;
     const {error} = bookDtoSchema.validate(dto);
     if(error) throw new Error(JSON.stringify({status:400, message:error.message}));
-    const result:Book = controller.addBook(dto as BookDto);
+    const result:Book = await controller.addBook(dto as BookDto);
     res.type("application/json").json(result);
 }));
 
-booksRouter.delete('/',asyncHandler((req, res) => {
+booksRouter.delete('/',asyncHandler(async (req, res) => {
     const id = req.query.id;
     const{error} = bookIdSchema.validate(id);
     if(error) throw new Error(JSON.stringify({status:400, message:error.message}));
-    const result:BookDto = controller.removeBook(id as string);
+    const result:BookDto = await controller.removeBook(id as string);
     res.type("application/json").json(result);
 }))
 booksRouter.put('/pickup', asyncHandler((req, res) => {
@@ -50,7 +50,7 @@ booksRouter.put('/return', asyncHandler((req, res) => {
     res.send('Book returned')
 }));
 
-booksRouter.get('/genre', asyncHandler((req, res)=> {
-    const result:BookDto[] = controller.getBooksByGenre(req.query.genre as string);
+booksRouter.get('/genre', asyncHandler(async (req, res)=> {
+    const result:BookDto[] = await controller.getBooksByGenre(req.query.genre as string);
     res.type("application/json").json(result)
 }))

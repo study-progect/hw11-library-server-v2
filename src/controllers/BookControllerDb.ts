@@ -1,11 +1,12 @@
-import {LibraryServiceImplEmbedded} from "../service/LibraryServiceImplEmbedded.js";
+import {LibraryServiceImplEmbeddedWithMongo} from "../service/LibraryServiceImplEmbeddedWithMongo.js";
 import {LibraryService} from "../service/LibraryService.js";
 import {BookDto} from "../model/BookDto.js";
 import {Book} from "../model/Book.js";
 import {convertBookDtoToBook, convertBookToBookDto, getGenre} from "../utils/tools.js";
 
-export class BookController {
-    private libService:LibraryService = new LibraryServiceImplEmbedded();
+
+export class BookControllerDb {
+    private libService:LibraryService = new LibraryServiceImplEmbeddedWithMongo();
 
     getAllBooks() {
         return this.libService.getAllBooks();
@@ -25,12 +26,12 @@ export class BookController {
         return convertBookToBookDto(book);
     }
 
-    pickUpBook(id: string) {
-        this.libService.pickUpBook(id)
+    async pickUpBook(id: string) {
+        await this.libService.pickUpBook(id)
     }
 
-    returnBook(id: string, reader: string) {
-        this.libService.returnBook(id, reader)
+    async returnBook(id: string, reader: string) {
+        await this.libService.returnBook(id, reader)
     }
 
     async getBooksByGenre(genre: string) {
